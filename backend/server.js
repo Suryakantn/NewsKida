@@ -12,8 +12,9 @@ app.get('/', (req, res) => {
     res.send('HHIHIHI')
 })
 app.post('/getnews', async (req, res) => {
-    // console.log('req', req.body);
+    console.log('req', req.body);
     let news = await getNewsApi(req.body);
+    console.log('req', news);
     res.send(news);
 })
 async function getNewsApi(req) {
