@@ -2,7 +2,11 @@ import express from "express";
 const app = express();
 import bodyParser from "body-parser";
 import cors from "cors";
-import config from "./config.json";
+// import config from "./config.json";
+const config = {
+    "port": 3001,
+    "REACT_APP_NEW_API_KEY": "e3cea6c4f0c14ee397818fdbc276b370"
+}
 import fetch from "node-fetch";
 app.use(cors({ origin: true }))
 app.use(bodyParser.json());
