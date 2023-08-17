@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const config = require('./config.json');
+const fetch = require("node-fetch");
 app.use(cors({ origin: true }))
 app.use(bodyParser.json());
 app.listen(config.port, () => [
