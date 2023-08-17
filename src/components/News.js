@@ -10,6 +10,7 @@ const News = (props) => {
     const [page, setpage] = useState(1);
     const [totalResults, settotalResults] = useState(5);
     const [pageSize, setpageSize] = useState(5);
+    const [errorMessage, seterrorMessage] = useState('');
     const capitaliseText = (text) => {
         return text.charAt(0).toUpperCase() + text.slice(1);
     }
@@ -30,12 +31,37 @@ const News = (props) => {
         props.setprogress(100);
     }
     const getNewsHead = async (page, pageSize) => {
+        seterrorMessage('');
         setloading(true);
-        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.newsapikey}&page=${page}&pageSize=${pageSize}`;
-        let data = await fetch(url);
-        data = await data.json();
-        props.setprogress(70);
-        return data;
+        let req = {
+            country: props.country,
+            category: props.category,
+            page: page,
+            pageSize: pageSize
+        }
+        let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Access-Control-Allow-Origin': '*',
+
+            },
+            body: JSON.stringify(req)
+        }
+        try {
+            let url = 'http://localhost:3001/getnews'
+            // let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.newsapikey}&page=${page}&pageSize=${pageSize}`;
+            let data = await fetch(url, options);
+            data = await data.json();
+            props.setprogress(70);
+            return data;
+        } catch (error) {
+            seterrorMessage('No News Found');
+            return {
+                totalResults: 0,
+                articles: []
+            };
+        }
     }
     // const onPreviousClick = async () => {
     //     if (page > 1) {
@@ -75,6 +101,10 @@ const News = (props) => {
             >
                 <div className='container'>
                     <div className='row'>
+                        {errorMessage &&
+                            <h1 className="container text-center">
+                                {errorMessage}
+                            </h1>}
                         {articles.map((elem, index) => {
                             return (
                                 <div className="col md4" key={`${elem.url}-${index}`}>
