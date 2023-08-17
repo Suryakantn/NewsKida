@@ -2,7 +2,7 @@ import express from "express";
 const app = express();
 import bodyParser from "body-parser";
 import cors from "cors";
-import config from "./config.json" assert { type: "json" };
+import config from "./config.json";
 import fetch from "node-fetch";
 app.use(cors({ origin: true }))
 app.use(bodyParser.json());
